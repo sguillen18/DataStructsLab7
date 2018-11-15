@@ -2,6 +2,9 @@ package lab7;
 
 public class Line {
 	
+	private Point2d start;
+	private Point2d end;
+	
 	private class Point2d{
 		
 		
