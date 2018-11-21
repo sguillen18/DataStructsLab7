@@ -1,9 +1,11 @@
 package Lab7;
 
-public class DoublyLinkedList <T> implements ListInterface <T>, Iterable <T>  {
+import java.util.NoSuchElementException;
+
+public class DoublyLinkedList <T> implements ListInterface <T>{
 	
 	//creates Node class
-	public class Node{
+	private class Node{
 		private T data;
 		private Node next;
 		private Node prev;
@@ -44,7 +46,24 @@ public class DoublyLinkedList <T> implements ListInterface <T>, Iterable <T>  {
 		}
 	}
 	
-	private Node firstNode;
+	private Node head;
+	private Node tail;
+	
+	public Node getHead() {
+		return head;
+	}
+	
+	public T getHeadData() {
+		return head.getData();
+	}
+	
+	public T getTailData() {
+		return tail.getData();  
+	}
+	
+	public Node getTail() {
+		return tail;
+	}
 	
 	public DoublyLinkedList () {
 	}
@@ -55,12 +74,12 @@ public class DoublyLinkedList <T> implements ListInterface <T>, Iterable <T>  {
 		
 	}
 	
-	public Node getNodeAt(int givenPosition) {
+	private Node getNodeAt(int givenPosition) {
 		   assert (givenPosition >= 0 && givenPosition < getLength());
 		 
-		   Node currentNode = firstNode;
+		   Node currentNode = head;
 		   if(givenPosition == 0) {
-			   return firstNode;
+			   return head;
 		   }
 		   for (int idx = 0; idx < givenPosition; idx ++) {
 		       currentNode = currentNode.getNext();
@@ -73,12 +92,12 @@ public class DoublyLinkedList <T> implements ListInterface <T>, Iterable <T>  {
 	public void add(T newEntry) {
 	    Node newNode = new Node(newEntry);
         
-	    if (firstNode == null)
-	        firstNode = newNode;
+	    if (head == null)
+	        head = newNode;
 	    else {
 	        boolean end = false;
-	        Node nextNode = firstNode.getNext();
-	        Node curr = firstNode;
+	        Node nextNode = head.getNext();
+	        Node curr = head;
 	            
 	        while (!end) {
 	            end = (nextNode == null);
@@ -91,6 +110,7 @@ public class DoublyLinkedList <T> implements ListInterface <T>, Iterable <T>  {
 	     assert (curr != null);
 	     curr.setNext(newNode);
 	     newNode.setPrev(curr);
+	     tail = newNode;
 	   }   
 
 		
@@ -105,13 +125,18 @@ public class DoublyLinkedList <T> implements ListInterface <T>, Iterable <T>  {
 		   Node newNode = new Node(newEntry);
 		        
 		   if (newPosition == 0) {// the only value for the empty list
-			  firstNode.setPrev(newNode);
-		      newNode.setNext(firstNode);  
-		      firstNode = newNode;
+			  head.setPrev(newNode);
+		      newNode.setNext(head);  
+		      head = newNode;
 		   }
+		   if (newPosition == getLength()) {// the only value for the empty list
+				  tail.setNext(newNode);
+			      newNode.setPrev(tail);  
+			      tail = newNode;
+			   }
 		   else { // traverse the chain
 		      int idx = 0; boolean found = false;
-		      Node after = firstNode, before = null;
+		      Node after = head, before = null;
 		      do {
 		        if (idx == newPosition) {
 		          found = true;
@@ -134,7 +159,7 @@ public class DoublyLinkedList <T> implements ListInterface <T>, Iterable <T>  {
 	public int getLength(){
 	    int numEntries = 0;
 	    Node curr;
-	    for (curr = firstNode; curr != null;
+	    for (curr = head; curr != null;
 	                               curr = curr.getNext())
 	       numEntries ++;  
 	    return numEntries;
@@ -146,14 +171,14 @@ public class DoublyLinkedList <T> implements ListInterface <T>, Iterable <T>  {
 	       throw new NullPointerException();
 	    if (givenPosition < 0 || givenPosition >= getLength())
 	       throw new IndexOutOfBoundsException();
-	    T dataItem = firstNode.getData();
+	    T dataItem = head.getData();
 	            
 	    if (givenPosition == 0)
-	       firstNode = firstNode.getNext();
+	       head = head.getNext();
 	    else {
 	       int idx = 0;
-	       Node nextNode = firstNode;
-	       for (Node curr = firstNode; nextNode != null; 
+	       Node nextNode = head;
+	       for (Node curr = head; nextNode != null; 
 	                                     curr = nextNode) {
 	          idx ++;
 	          nextNode = curr.getNext();
@@ -170,20 +195,43 @@ public class DoublyLinkedList <T> implements ListInterface <T>, Iterable <T>  {
 	}
 	
 	public boolean isEmpty() {
-		if(firstNode==null) {
+		if(head==null) {
 			return true;
 		}
 		return false;
 	}
+	
+	public void reverse() {
+		Node temp = null;
+		Node curr = head;
+		
+		while(curr != null) {
+			temp = curr.getPrev();
+			curr.setPrev(curr.getNext());
+			curr.setNext(temp);
+			curr = curr.getPrev();
+		}
+		temp = head;
+		head = tail;
+		tail = temp;
+	}
+	
+	public void print() {
+		Node curr = head;
+		for(int i = 0; i < getLength(); i++) {
+			System.out.print(curr.getData() + " ");
+			curr = curr.getNext();
+		}
+		System.out.print("\n");
+	}
 
 
-	@Override
 	public boolean remove(T anEntry) {
 		// TODO Auto-generated method stub
 		int i=0;
 		
-	    Node nextNode = firstNode;
-	    for (Node curr = firstNode; nextNode != null; 
+	    Node nextNode = head;
+	    for (Node curr = head; nextNode != null; 
 	                                     curr = nextNode) {
 	          if(curr.data.equals(anEntry)) {
 	        	  remove(i);
@@ -202,8 +250,8 @@ public class DoublyLinkedList <T> implements ListInterface <T>, Iterable <T>  {
 		
 		while(!isEmpty()) {
 			@SuppressWarnings("unused")
-			Node curr = firstNode;
-			firstNode=firstNode.next;
+			Node curr = head;
+			head=head.next;
 			curr = null;
 		}
 		
@@ -218,15 +266,59 @@ public class DoublyLinkedList <T> implements ListInterface <T>, Iterable <T>  {
 
 	@Override
 	public boolean contains(T anEntry) {
-		// TODO Auto-generated method stub
 		Node curr;
 		
-		for (curr = firstNode; curr != null;
+		for (curr = head; curr != null;
                 curr = curr.getNext())
 			if((curr.getData()).equals(anEntry)) 
 				return true;
 		return false;
 	}
+	@SuppressWarnings("unused")
+	private class IteratorForDoublyLinkedList implements Iterable<T>{
+		private Node nextNode;
+		  private Node currNode;
+	       private Node prevNode;
+		  private boolean nextWasCalled = false;
+		  
+		  public IteratorForDoublyLinkedList() {
+			  nextNode = getHead();
+	             currNode = null;
+	             prevNode = null;
+			  if (nextNode == null) {
+				  throw new IllegalStateException 
+	                        ("Cannot iterate on empty list");
+			  }
+		  }
+		  
+		  public boolean hasNext() {
+			  return (nextNode != null);
+		  }
+		  
+		  public T next() {
+	             if (hasNext()) {
+	            	 T result = (T) nextNode.getData();
+	            	 prevNode = currNode;
+	            	 currNode = nextNode;
+	            	 nextNode = nextNode.getNext();
+	            	 nextWasCalled = true;
+	            	 return result;
+	             }
+	             else
+	               throw new NoSuchElementException ("Illegal call: iterator after the end of the list");
+		  }
+		  public void remove() {
+				//  throw new UnsupportedOperationException
+	              // ("remove is not supported by this iterator");
+	           if (!nextWasCalled)
+	                throw new IllegalStateException("call to remove without call to next");
+	           prevNode.setNext(nextNode);
+			currNode = prevNode;
+			nextWasCalled = false;
+		  }
+		  
+	  }
 
+	}
+		
 
-}
