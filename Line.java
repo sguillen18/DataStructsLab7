@@ -42,4 +42,20 @@ public class Line {
 		this.start = start;
 		this.end = end;
 	}
+	
+	public Point2d getStart() {
+		return start;
+	}
+	
+	public Point2d getEnd() {
+		return end;
+	}
+	
+	public void setStart(Point2d s) {
+		start = s;
+	}
+	
+	public void setEnd(Point2d e) {
+		end = e;
+	}
 }

@@ -55,7 +55,8 @@ public class Polygon {
 		lines.reverse();
 		
 		for(int i = 0; i < lines.getLength(); i++) {
-			
+			Line l = lines.getEntry(i);
+			double temp = l.
 		}
 	}
 
