@@ -1,5 +1,6 @@
-package lab7;
+package Lab7;
 
 public class Polygon {
+	DoublyLinkedList <Line> lines;
 
 }
