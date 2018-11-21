@@ -78,5 +78,14 @@ public class Polygon {
 			g2.draw(new Line2D.Double(x1, y1, x2, y2));
 		}
 	}
+	
+	public void fillInGaps() {
+		for(int i = 0; i < lines.getLength(); i++) {
+			if(!lines.getEntry(i).getEnd().equals(lines.getEntry(i%(lines.getLength() - 1)).getStart())) {
+				Line l = new Line(lines.getEntry(i).getEnd(), lines.getEntry(i%(lines.getLength() - 1)).getStart());
+				lines.add(i%(lines.getLength() - 1), l);
+			}
+		}
+	}
 
 }
