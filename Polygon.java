@@ -1,14 +1,7 @@
 package Lab7;
-
-import java.awt.Color;
-import java.applet.Applet;
-import java.awt.Graphics;
-import java.awt.Graphics2D;
-import java.awt.Shape;
-import java.awt.geom.Line2D;
 import java.util.Scanner;
 
-public class Polygon extends Applet {
+public class Polygon{
 	DoublyLinkedList <Line> lines = new DoublyLinkedList<Line>();
 	
 	public Polygon() {
@@ -69,13 +62,14 @@ public class Polygon extends Applet {
 		}
 	}
 	
-	public DoublyLinkedList <Line> getLines(){
-		return lines;
-	}
-	
-	
 	public void display() {
-		
+		for(int i = 0; i < lines.getLength(); i++) {
+			Line l = lines.getEntry(i);
+			System.out.println("Line " + (i + 1));
+			System.out.println("Start: " + l.getStart().getX() + ", " + l.getStart().getY());
+			System.out.println("End: " + l.getEnd().getX() + ", " + l.getEnd().getY() +"\n");
+			
+		}
 	}
 	
 	public void fillInGaps() {
