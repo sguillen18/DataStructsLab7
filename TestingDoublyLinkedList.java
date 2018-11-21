@@ -1,8 +1,12 @@
 package Lab7;
 
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.util.Scanner;
+
 public class TestingDoublyLinkedList {
 
-	public static void main(String[] args) {
+	public static void main(String[] args) throws FileNotFoundException {
 		// TODO Auto-generated method stub
 		DoublyLinkedList <String> l = new DoublyLinkedList<String>();
 		l.add("pink");
@@ -11,6 +15,15 @@ public class TestingDoublyLinkedList {
 		l.print();
 		l.reverse();
 		l.print();
+		
+		File inFile = new File("C:\\Users\\hillg2\\eclipse-workspace\\DataStructures\\src\\Lab7\\polygon.txt");
+		Scanner sc = new Scanner(inFile);
+		
+		Polygon p = new Polygon();
+		p.readFromFile(sc);
+		p.display();
+		
+		sc.close();
 	}
 
 }

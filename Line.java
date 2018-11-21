@@ -3,32 +3,7 @@ package Lab7;
 public class Line {
 	private Point2d start;
 	private Point2d end;
-	
-	private class Point2d{
-		private double x;
-		private double y;
-		public Point2d(double x, double y) {
-			this.x = x;
-			this.y = y;
-		}
-		
-		public double getX() {
-			return x;
-		}
-		
-		public double getY() {
-			return y;
-		}
-		
-		public void setX(double xNew) {
-			x = xNew;
-		}
-		
-		public void setY(double yNew) {
-			y = yNew;
-		}
-		
-	}
+
 	
 	//in professor's prompt, y2 is actually just y
 	public Line(double x1, double y1, double x2, double y2) {
